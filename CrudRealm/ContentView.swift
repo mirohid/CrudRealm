@@ -58,23 +58,29 @@ struct ContentView: View {
                 }
             }
             .overlay(
-                showAlert ? CustomAlertView(
-                    showAlert: $showAlert,
-                    name: $name,
-                    email: $email,
-                    onSave: {
-                        if isEditing {
-                            if let item = editingItem {
-                                realmManager.updateItem(id: item.id, name: name, email: email)
+                withAnimation(){
+                    showAlert ? CustomAlertView(
+                        showAlert: $showAlert,
+                        name: $name,
+                        email: $email,
+                        onSave: {
+                            if isEditing {
+                                if let item = editingItem {
+                                    realmManager.updateItem(id: item.id, name: name, email: email)
+                                }
+                            } else {
+                                realmManager.addItem(name: name, email: email)
                             }
-                        } else {
-                            realmManager.addItem(name: name, email: email)
+                            name = ""
+                            email = ""
+                            editingItem = nil
                         }
-                        name = ""
-                        email = ""
-                        editingItem = nil
-                    }
-                ) : nil
+                
+                    ): nil
+                   
+                }
+                
+              
             )
         }
     }

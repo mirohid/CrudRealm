@@ -20,10 +20,13 @@ class RealmManager: ObservableObject {
     
     func loadItems() {
         guard let realm = realm else { return }
+        
         let realmItems = realm.objects(Item.self)
         items = Array(realmItems)
     }
     
+    
+    //Add:-----------------------------------------------
     func addItem(name: String, email: String) {
         guard let realm = realm else { return }
         let item = Item(name: name, email: email)
@@ -37,13 +40,18 @@ class RealmManager: ObservableObject {
         }
     }
     
+    
+    //Update:-----------------------------------------------
     func updateItem(id: ObjectId, name: String, email: String) {
         guard let realm = realm else { return }
         do {
             if let item = realm.object(ofType: Item.self, forPrimaryKey: id) {
                 try realm.write {
-                    item.name = name
-                    item.email = email
+                    
+                    //------------------//
+                    item.name = name  //
+                    item.email = email //
+                    //-------------------//
                 }
                 loadItems()
             }
@@ -52,6 +60,8 @@ class RealmManager: ObservableObject {
         }
     }
     
+    
+    //Delete:-----------------------------------------------
     func deleteItem(id: ObjectId) {
         guard let realm = realm else { return }
         do {
