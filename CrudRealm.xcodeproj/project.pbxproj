@@ -6,8 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		645E5FC535EB12ABB517C29D /* Pods_CrudRealm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD4D1A010B9C2995215FB237 /* Pods_CrudRealm.framework */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		422CABA62D6460A300DA4982 /* CrudRealm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CrudRealm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFFC93E993DB67BD17668704 /* Pods-CrudRealm.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrudRealm.debug.xcconfig"; path = "Target Support Files/Pods-CrudRealm/Pods-CrudRealm.debug.xcconfig"; sourceTree = "<group>"; };
+		B85D75C33AD038C650A4B026 /* Pods-CrudRealm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CrudRealm.release.xcconfig"; path = "Target Support Files/Pods-CrudRealm/Pods-CrudRealm.release.xcconfig"; sourceTree = "<group>"; };
+		CD4D1A010B9C2995215FB237 /* Pods_CrudRealm.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CrudRealm.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -23,17 +30,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				645E5FC535EB12ABB517C29D /* Pods_CrudRealm.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0707C40A01D8F17F50260684 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CD4D1A010B9C2995215FB237 /* Pods_CrudRealm.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		422CAB9D2D6460A300DA4982 = {
 			isa = PBXGroup;
 			children = (
 				422CABA82D6460A300DA4982 /* CrudRealm */,
 				422CABA72D6460A300DA4982 /* Products */,
+				D8F310F825EE32439870FAD6 /* Pods */,
+				0707C40A01D8F17F50260684 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -45,6 +63,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		D8F310F825EE32439870FAD6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AFFC93E993DB67BD17668704 /* Pods-CrudRealm.debug.xcconfig */,
+				B85D75C33AD038C650A4B026 /* Pods-CrudRealm.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -52,9 +79,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 422CABB42D6460A400DA4982 /* Build configuration list for PBXNativeTarget "CrudRealm" */;
 			buildPhases = (
+				8CFDEF8DDB4D66FC33153ADA /* [CP] Check Pods Manifest.lock */,
 				422CABA22D6460A300DA4982 /* Sources */,
 				422CABA32D6460A300DA4982 /* Frameworks */,
 				422CABA42D6460A300DA4982 /* Resources */,
+				8E3A63EE16AD53E7FBB8CC59 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -64,8 +93,6 @@
 				422CABA82D6460A300DA4982 /* CrudRealm */,
 			);
 			name = CrudRealm;
-			packageProductDependencies = (
-			);
 			productName = CrudRealm;
 			productReference = 422CABA62D6460A300DA4982 /* CrudRealm.app */;
 			productType = "com.apple.product-type.application";
@@ -113,6 +140,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8CFDEF8DDB4D66FC33153ADA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-CrudRealm-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8E3A63EE16AD53E7FBB8CC59 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CrudRealm/Pods-CrudRealm-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-CrudRealm/Pods-CrudRealm-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CrudRealm/Pods-CrudRealm-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		422CABA22D6460A300DA4982 /* Sources */ = {
@@ -246,6 +315,7 @@
 		};
 		422CABB52D6460A400DA4982 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AFFC93E993DB67BD17668704 /* Pods-CrudRealm.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -254,6 +324,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"CrudRealm/Preview Content\"";
 				DEVELOPMENT_TEAM = T97Y37DPWY;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -275,6 +346,7 @@
 		};
 		422CABB62D6460A400DA4982 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B85D75C33AD038C650A4B026 /* Pods-CrudRealm.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -283,6 +355,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"CrudRealm/Preview Content\"";
 				DEVELOPMENT_TEAM = T97Y37DPWY;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

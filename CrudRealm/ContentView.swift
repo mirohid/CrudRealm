@@ -6,18 +6,19 @@
 //
 
 import SwiftUI
+import RealmSwift
 
 struct ContentView: View {
+    @StateObject private var realmManager = RealmManager()
     @State private var showAlert = false
     @State private var name = ""
     @State private var email = ""
-    @State private var items: [Item] = []
     @State private var editingItem: Item?
     @State private var isEditing = false
     
     var body: some View {
         NavigationStack {
-            List(items) { item in
+            List(realmManager.items) { item in
                 VStack(alignment: .leading) {
                     Text(item.name)
                         .font(.headline)
@@ -26,9 +27,7 @@ struct ContentView: View {
                         .foregroundColor(.gray)
                 }.swipeActions {
                     Button(role: .destructive) {
-                        if let index = items.firstIndex(where: { $0.id == item.id }) {
-                            items.remove(at: index)
-                        }
+                        realmManager.deleteItem(id: item.id)
                     } label: {
                         Text("Delete")
                     }
@@ -65,11 +64,11 @@ struct ContentView: View {
                     email: $email,
                     onSave: {
                         if isEditing {
-                            if let index = items.firstIndex(where: { $0.id == editingItem?.id }) {
-                                items[index] = Item(name: name, email: email)
+                            if let item = editingItem {
+                                realmManager.updateItem(id: item.id, name: name, email: email)
                             }
                         } else {
-                            items.append(Item(name: name, email: email))
+                            realmManager.addItem(name: name, email: email)
                         }
                         name = ""
                         email = ""
@@ -80,7 +79,6 @@ struct ContentView: View {
         }
     }
 }
-
 struct CustomAlertView: View {
     @Binding var showAlert: Bool
     @Binding var name: String
