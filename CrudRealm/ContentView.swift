@@ -15,35 +15,45 @@ struct ContentView: View {
     @State private var email = ""
     @State private var editingItem: Item?
     @State private var isEditing = false
+    @State private var searchText = ""
+    
+    // Convert to regular array to avoid Realm threading issues
+    private var filteredItems: [Item] {
+        let items = Array(realmManager.items)
+        if searchText.isEmpty {
+            return items
+        } else {
+            return items.filter { item in
+                item.name.localizedCaseInsensitiveContains(searchText) ||
+                item.email.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
     
     var body: some View {
         NavigationStack {
-            List(realmManager.items) { item in
-                VStack(alignment: .leading) {
-                    Text(item.name)
-                        .font(.headline)
-                    Text(item.email)
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                }.swipeActions {
-                    Button(role: .destructive) {
-                        realmManager.deleteItem(id: item.id)
-                    } label: {
-                        Text("Delete")
+            VStack {
+                SearchBar(text: $searchText)
+                
+                if filteredItems.isEmpty {
+                    ContentUnavailableView("No Contacts",
+                        systemImage: "person.crop.circle.badge.exclamationmark",
+                        description: Text("Add contacts using the + button"))
+                } else {
+                    List(filteredItems) { item in
+                        ItemRowView(item: item, onEdit: {
+                            editingItem = item
+                            name = item.name
+                            email = item.email
+                            isEditing = true
+                            showAlert = true
+                        }, onDelete: {
+                            realmManager.deleteItem(id: item.id)
+                        })
                     }
-                    
-                    Button {
-                        editingItem = item
-                        name = item.name
-                        email = item.email
-                        isEditing = true
-                        showAlert = true
-                    } label: {
-                        Text("Edit")
-                    }.tint(.indigo)
                 }
             }
-            .navigationTitle("Add Details")
+            .navigationTitle("Contacts")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -54,37 +64,107 @@ struct ContentView: View {
                     } label: {
                         Image(systemName: "person.crop.circle.badge.plus")
                             .font(.title2)
+                            .foregroundColor(.blue)
                     }
                 }
             }
-            .overlay(
-                withAnimation(){
-                    showAlert ? CustomAlertView(
+            .alert("Invalid Input", isPresented: .constant(false)) {
+                Button("OK", role: .cancel) { }
+            } message: {
+                Text("Please enter both name and email")
+            }
+            .overlay {
+                if showAlert {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                        .transition(.opacity)
+                    
+                    CustomAlertView(
                         showAlert: $showAlert,
                         name: $name,
                         email: $email,
                         onSave: {
+                            guard !name.isEmpty && !email.isEmpty else { return }
+                            
                             if isEditing {
                                 if let item = editingItem {
                                     realmManager.updateItem(id: item.id, name: name, email: email)
                                 }
                             } else {
                                 realmManager.addItem(name: name, email: email)
+                                realmManager.loadItems() // Refresh the list
                             }
                             name = ""
                             email = ""
                             editingItem = nil
+                            showAlert = false
                         }
-                
-                    ): nil
-                   
+                    )
+                    .transition(.scale)
                 }
-                
-              
-            )
+            }
         }
     }
 }
+    // Add this new view
+    struct SearchBar: View {
+        @Binding var text: String
+        
+        var body: some View {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.gray)
+                
+                TextField("Search", text: $text)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                
+                if !text.isEmpty {
+                    Button(action: {
+                        text = ""
+                    }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
+            .padding(.horizontal)
+            .padding(.top, 8)
+        }
+    }
+
+    // Add this new view
+    struct ItemRowView: View {
+        let item: Item
+        let onEdit: () -> Void
+        let onDelete: () -> Void
+        
+        var body: some View {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(item.name)
+                    .font(.headline)
+                
+                Text(item.email)
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                
+                Text(item.createdAt.formatted(date: .abbreviated, time: .shortened))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+            .padding(.vertical, 4)
+            .swipeActions {
+                Button(role: .destructive, action: onDelete) {
+                    Label("Delete", systemImage: "trash")
+                }
+                
+                Button(action: onEdit) {
+                    Label("Edit", systemImage: "pencil")
+                }
+                .tint(.indigo)
+            }
+        }
+    }
+
 struct CustomAlertView: View {
     @Binding var showAlert: Bool
     @Binding var name: String

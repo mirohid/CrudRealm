@@ -11,7 +11,7 @@ import SwiftUI
 struct CrudRealmApp: App {
     var body: some Scene {
         WindowGroup {
-            let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!)
+           // let _ = print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!)
             ContentView()
         }
     }
